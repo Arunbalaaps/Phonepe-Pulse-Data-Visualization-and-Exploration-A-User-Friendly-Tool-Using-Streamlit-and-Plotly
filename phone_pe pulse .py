@@ -40,6 +40,10 @@ for state in agg_trans_list:
                 columns1["Years"].append(year)
                 columns1["Quarter"].append(int(file.strip(".json")))
 aggre_transaction=pd.DataFrame(columns1)
+aggre_transaction["States"] = aggre_transaction["States"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+aggre_transaction["States"] = aggre_transaction["States"].str.replace("-"," ")
+aggre_transaction["States"] = aggre_transaction["States"].str.title()
+aggre_transaction['States'] = aggre_transaction['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
 
 
@@ -78,6 +82,10 @@ for state in agg_trans_list:
 
 
 user_device=pd.DataFrame(columns2)
+user_device["States"] = user_device["States"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+user_device["States"] = user_device["States"].str.replace("-"," ")
+user_device["States"] = user_device["States"].str.title()
+user_device['States'] = user_device['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
 
 path3 = "C:/Users/HP/Documents/practice/phone pe/pulse/data/map/transaction/hover/country/india/state/"
@@ -111,6 +119,10 @@ for state in map_tran_list:
 
 
 map_transaction = pd.DataFrame(columns3)
+map_transaction["States"] = map_transaction["States"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+map_transaction["States"] = map_transaction["States"].str.replace("-"," ")
+map_transaction["States"] = map_transaction["States"].str.title()
+map_transaction['States'] = map_transaction['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
 
 path4 = "C:/Users/HP/Documents/practice/phone pe/pulse/data/map/user/hover/country/india/state/"
@@ -144,6 +156,10 @@ for state in map_user_list:
 
 
 map_user = pd.DataFrame(columns4)
+map_user["States"] = map_user["States"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+map_user["States"] = map_user["States"].str.replace("-"," ")
+map_user["States"] = map_user["States"].str.title()
+map_user['States'] = map_user['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
 
 
@@ -177,6 +193,10 @@ for state in top_tran_list:
                 columns5["Quarter"].append(int(file.strip(".json")))
 
 top_transaction = pd.DataFrame(columns5)
+top_transaction["States"] = top_transaction["States"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+top_transaction["States"] = top_transaction["States"].str.replace("-"," ")
+top_transaction["States"] = top_transaction["States"].str.title()
+top_transaction['States'] = top_transaction['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
 
 path6 = "C:/Users/HP/Documents/practice/phone pe/pulse/data/top/user/country/india/state/"
@@ -209,6 +229,10 @@ for state in top_user_list:
 
 
 top_user = pd.DataFrame(columns6)
+top_user["States"] = top_user["States"].str.replace("andaman-&-nicobar-islands","Andaman & Nicobar")
+top_user["States"] = top_user["States"].str.replace("-"," ")
+top_user["States"] = top_user["States"].str.title()
+top_user['States'] = top_user['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
 
 mydb = psycopg2.connect(host = "localhost",
@@ -434,7 +458,7 @@ def animate_all_amount():
                             animation_frame="Years", animation_group="Quarter")
 
     fig_tra.update_geos(fitbounds= "locations", visible =False)
-    fig_tra.update_layout(width =600, height= 700)
+    fig_tra.update_layout(width =500, height= 500)
     fig_tra.update_layout(title_font= {"size":25})
     return st.plotly_chart(fig_tra)
 
@@ -478,7 +502,7 @@ def animate_all_count():
                         title="TRANSACTION COUNT", hover_name= "States", animation_frame= "Years", animation_group= "Quarter")
 
     fig_tra.update_geos(fitbounds= "locations", visible= False)
-    fig_tra.update_layout(width= 600, height= 700)
+    fig_tra.update_layout(width= 500, height= 500)
     fig_tra.update_layout(title_font={"size":25})
     return st.plotly_chart(fig_tra)
 
@@ -523,7 +547,7 @@ def transaction_amount_year(sel_year):
                             title="TRANSACTION AMOUNT and STATES", hover_name= "States")
 
     fig_atay.update_geos(fitbounds= "locations", visible= False)
-    fig_atay.update_layout(width=600,height=700)
+    fig_atay.update_layout(width=500,height=500)
     fig_atay.update_layout(title_font= {"size":25})
     return st.plotly_chart(fig_atay)
 
@@ -560,7 +584,7 @@ def transaction_count_year(sel_year):
                             color= "Transaction_count", color_continuous_scale= "rainbow",range_color=(0,3000000000),
                             title= "TRANSACTION COUNT and STATES",hover_name= "States")
     fig_atcy.update_geos(fitbounds= "locations", visible= False)
-    fig_atcy.update_layout(width=600, height= 700)
+    fig_atcy.update_layout(width=500, height= 500)
     fig_atcy.update_layout(title_font={"size":25})
     return st.plotly_chart(fig_atcy)
 
