@@ -9,7 +9,7 @@ import plotly.express as px
 
 
 
-
+#extracting details of aggregated  transaction
 path1="C:/Users/HP/Documents/practice/phone pe/pulse/data/aggregated/transaction/country/india/state/"
 agg_trans_list=os.listdir(path1)
 
@@ -46,7 +46,7 @@ aggre_transaction["States"] = aggre_transaction["States"].str.title()
 aggre_transaction['States'] = aggre_transaction['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
 
-
+#extracting detais of aggregated user
 path2="C:/Users/HP/Documents/practice/phone pe/pulse/data/aggregated/user/country/india/state/"
 
 user_by_device=os.listdir(path2)
@@ -87,7 +87,7 @@ user_device["States"] = user_device["States"].str.replace("-"," ")
 user_device["States"] = user_device["States"].str.title()
 user_device['States'] = user_device['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
-
+#extracting details of map transaction
 path3 = "C:/Users/HP/Documents/practice/phone pe/pulse/data/map/transaction/hover/country/india/state/"
 map_tran_list = os.listdir(path3)
 
@@ -124,7 +124,7 @@ map_transaction["States"] = map_transaction["States"].str.replace("-"," ")
 map_transaction["States"] = map_transaction["States"].str.title()
 map_transaction['States'] = map_transaction['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
-
+#extracting details of map user
 path4 = "C:/Users/HP/Documents/practice/phone pe/pulse/data/map/user/hover/country/india/state/"
 map_user_list = os.listdir(path4)
 
@@ -162,7 +162,7 @@ map_user["States"] = map_user["States"].str.title()
 map_user['States'] = map_user['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
 
-
+#extracting details of top transaction
 path5 = "C:/Users/HP/Documents/practice/phone pe/pulse/data/top/transaction/country/india/state/"
 top_tran_list = os.listdir(path5)
 
@@ -198,7 +198,7 @@ top_transaction["States"] = top_transaction["States"].str.replace("-"," ")
 top_transaction["States"] = top_transaction["States"].str.title()
 top_transaction['States'] = top_transaction['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
-
+#extracting details of top user
 path6 = "C:/Users/HP/Documents/practice/phone pe/pulse/data/top/user/country/india/state/"
 top_user_list = os.listdir(path6)
 
@@ -234,7 +234,7 @@ top_user["States"] = top_user["States"].str.replace("-"," ")
 top_user["States"] = top_user["States"].str.title()
 top_user['States'] = top_user['States'].str.replace("Dadra & Nagar Haveli & Daman & Diu", "Dadra and Nagar Haveli and Daman and Diu")
 
-
+#SQL connection
 mydb = psycopg2.connect(host = "localhost",
                         user = "postgres",
                         password = "arunbala",
@@ -243,6 +243,7 @@ mydb = psycopg2.connect(host = "localhost",
                         )
 cursor = mydb.cursor()
 
+#table creation for aggregated transaction,aggragated user,map transaction,map user, to transaction,top user
 
 create_query1 = '''CREATE TABLE if not exists aggregated_transaction (States varchar(50),
                                                                       Years int,
@@ -384,7 +385,7 @@ for index,row in top_user.iterrows():
     mydb.commit()
 
 
-
+#SQL connection
 mydb = psycopg2.connect(host = "localhost",
                         user = "postgres",
                         password = "arunbala",
@@ -393,7 +394,7 @@ mydb = psycopg2.connect(host = "localhost",
                         )
 cursor = mydb.cursor()
 
-
+#fetching the data from sql database and converting into dataframe
 cursor.execute("select * from aggregated_transaction;")
 mydb.commit()
 table1 = cursor.fetchall()
@@ -429,7 +430,7 @@ mydb.commit()
 table6 = cursor.fetchall()
 Top_user = pd.DataFrame(table6, columns = ("States", "Years", "Quarter", "Pincodes", "RegisteredUser"))
 
-
+#animate all transaction amount
 def animate_all_amount():
     url = "https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson"
     response =requests.get(url)
@@ -462,7 +463,7 @@ def animate_all_amount():
     fig_tra.update_layout(title_font= {"size":25})
     return st.plotly_chart(fig_tra)
 
-
+#functon for payment transaction count
 def payment_count():
     attype= Aggre_trans[["Transaction_type", "Transaction_count"]]
     att1= attype.groupby("Transaction_type")["Transaction_count"].sum()
@@ -472,7 +473,7 @@ def payment_count():
     fig_pc.update_layout(width=600, height= 500)
     return st.plotly_chart(fig_pc)
 
-
+#funcction for animate all transaction mount count
 def animate_all_count():
     url = "https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson"
     response= requests.get(url)
@@ -506,7 +507,7 @@ def animate_all_count():
     fig_tra.update_layout(title_font={"size":25})
     return st.plotly_chart(fig_tra)
 
-
+#function for payment transaction amount
 def payment_amount():
     attype= Aggre_trans[["Transaction_type","Transaction_amount"]]
     att1= attype.groupby("Transaction_type")["Transaction_amount"].sum()
@@ -516,7 +517,7 @@ def payment_amount():
     fig_tra_pa.update_layout(width= 600, height= 500)
     return st.plotly_chart(fig_tra_pa)
 
-
+#function for all states registered users
 def reg_all_states(state):
     mu= Map_user[["States","Districts","RegisteredUser"]]
     mu1= mu.loc[(mu["States"]==state)]
@@ -528,7 +529,7 @@ def reg_all_states(state):
     fig_mu.update_layout(width= 1000, height= 500)
     return st.plotly_chart(fig_mu)
 
-
+#functon for yeaars wise transaction amount
 def transaction_amount_year(sel_year):
     url= "https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson"
     response= requests.get(url)
@@ -552,7 +553,7 @@ def transaction_amount_year(sel_year):
     return st.plotly_chart(fig_atay)
 
 
-
+#function for yearwise paymount transaction count
 def payment_count_year(sel_year):
     year= int(sel_year)
     apc= Aggre_trans[["Transaction_type", "Years", "Transaction_count"]]
@@ -566,7 +567,7 @@ def payment_count_year(sel_year):
     return st.plotly_chart(fig_apc)
 
 
-
+# function for year wise transaction count
 def transaction_count_year(sel_year):
     url= "https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson"
     response= requests.get(url)
@@ -588,7 +589,7 @@ def transaction_count_year(sel_year):
     fig_atcy.update_layout(title_font={"size":25})
     return st.plotly_chart(fig_atcy)
 
-
+#function for year wise payment transaction amount
 def payment_amount_year(sel_year):
     year= int(sel_year)
     apay = Aggre_trans[["Years", "Transaction_type", "Transaction_amount"]]
@@ -601,7 +602,7 @@ def payment_amount_year(sel_year):
     fig_apay.update_layout(width=600, height=500)
     return st.plotly_chart(fig_apay)
 
-
+#function for registered user of all states 
 def reg_state_all_RU(sel_year,state):
     year= int(sel_year)
     mus= Map_user[["States", "Years", "Districts", "RegisteredUser"]]
@@ -614,7 +615,7 @@ def reg_state_all_RU(sel_year,state):
     fig_mus.update_layout(width= 600, height= 500)
     return st.plotly_chart(fig_mus)
 
-
+#function for transaction amount of all states
 def reg_state_all_TA(sel_year,state):
     year= int(sel_year)
     mts= Map_trans[["States", "Years","Districts", "Transaction_amount"]]
@@ -627,7 +628,7 @@ def reg_state_all_TA(sel_year,state):
     fig_mts.update_layout(width= 600, height= 500)
     return st.plotly_chart(fig_mts)
 
-
+#top 10 questions for visualization
 def ques1():
     brand= Aggre_user[["Brands","Transaction_count"]]
     brand1= brand.groupby("Brands")["Transaction_count"].sum().sort_values(ascending=False)
@@ -728,7 +729,7 @@ def ques10():
                 color_discrete_sequence= px.colors.sequential.Mint_r)
     return st.plotly_chart(fig_dt)
 
-
+#streamlit app codings
 st.set_page_config(layout= "wide",
                    page_icon="random")
 
